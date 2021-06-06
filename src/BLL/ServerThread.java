@@ -1,62 +1,17 @@
 package BLL;
-import java.io.*;
-import java.net.*;
-import java.util.*;
-
-// I think the Interface below is per client basis, a thread for a client can run this interface
-interface Server4ClientInterface{
-
-    // when a client ask to add someone else as a friend
-    int addFriendHandler(String friendName);
-
-    // delete an existing friend
-    int deleteFriendHandler(String friendName);
-
-    //
-    int sendMessageToFriend(String message,String Friend);
-
-    // send some message made by server
-    int sendBackSystemMessage(String message);
-
-    boolean login(String account, String password);
-
-    boolean createAccount(String account, String password);
-
-    Message receiveMessage();
-
-    void shutDown();
-}
+import Service.ServerThreadService;
+import model.*;
 
 
-public class ServerThread extends Thread implements  Server4ClientInterface {
-    protected Socket socket;
-    protected ChatServer server;
-    protected ObjectInputStream input;
-    protected ObjectOutputStream output;
+public class ServerThread extends Thread  {
+    public ServerThreadService serverThreadService;
     protected boolean connected;
     protected boolean logged;
-    private String userName;
 
-    public ServerThread(Socket socket,ChatServer server) {
-        this.socket = socket;
-        this.server = server;
+    public ServerThread(ServerThreadService serverThreadService) {
+        this.serverThreadService = serverThreadService;
         this.connected = true;
         this.logged = false;
-        this.userName = null;
-        try {
-            input = new ObjectInputStream(new BufferedInputStream(socket.getInputStream()));
-            output = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            // TODO: let the caller know failure and show some hints to the client(on the Frame)
-            try {
-                socket.close();
-                connected = false;
-            } catch (IOException e2) {
-                ;
-            }
-            e.printStackTrace();
-            return;
-        }
         this.start();
     }
 
@@ -65,34 +20,37 @@ public class ServerThread extends Thread implements  Server4ClientInterface {
         // first login or sign in
         try{
             while(!logged){
-                Message message = receiveMessage();
+                GeneralMessage message = serverThreadService.receiveGernerlMessageService();
+                int result;
                 switch (message.messageType){
                     case LOGIN_REQUEST:
                         // 收到登录相关信息
-                        LoginRequest m = (LoginRequest) message.content;
-                        if(login(m.account,m.password)){
+                        result = serverThreadService.loginService(message);
+                        if(result==0){
                             logged = true;
-                            server.serverThreads.put(m.account,this);
-                            userName = m.account;
-                            sendBackSystemMessage("Login successful!");
+                            serverThreadService.sendBackSystemMessageService(GeneralMessage.MessageType.LOGIN_SUCCESS);
                         }
-                        else{
+                        else if(result == -1){
                             //TODO 区分密码错误或用户不存在的情况
-                            sendBackSystemMessage("Login failed!");
+                            serverThreadService.sendBackSystemMessageService(GeneralMessage.MessageType.LOGIN_FAILED_ACCOUNT_NOT_FOUND);
+                        }
+                        else if(result == -2){
+                            serverThreadService.sendBackSystemMessageService(GeneralMessage.MessageType.LOGIN_FAILED_PASSWORD_INCORRECT);
                         }
                         break;
-                    case DELETE_FRIEND_REQUEST:
+                    case CREATE_ACCOUNT_REQUEST:
                         // 收到创建账户相关信息
-                        CreateAccountRequest m2 = (CreateAccountRequest) message.content;
-                        if(createAccount(m2.account,m2.password)){
+                        result = serverThreadService.createAccountService(message);
+                        if(result==0){
                             // 创建后自动登录
                             logged = true;
-                            server.serverThreads.put(m2.account,this);
-                            userName = m2.account;
-                            sendBackSystemMessage("Create account successful!");
+                            serverThreadService.sendBackSystemMessageService(GeneralMessage.MessageType.CREATE_ACCOUNT_SUCCESS);
                         }
-                        else{
-                            sendBackSystemMessage("Create account failed!");
+                        else if(result==-1){
+                            serverThreadService.sendBackSystemMessageService(GeneralMessage.MessageType.CREATE_ACCOUNT_FAILED_ACCOUNT_EXIST);
+                        }
+                        else {
+                            serverThreadService.sendBackSystemMessageService(GeneralMessage.MessageType.CREATE_ACCOUNT_FAILED_ERROR);
                         }
                 }
             }
@@ -102,76 +60,47 @@ public class ServerThread extends Thread implements  Server4ClientInterface {
 
         try{
             while(connected){
-                Message message = receiveMessage();
+                GeneralMessage message = serverThreadService.receiveGernerlMessageService();
                 switch(message.messageType){
-
-                    case NORMAL_MESSAGE:
-                        NormalMessage m = (NormalMessage) message.content;
-                        sendMessageToFriend(m.content,m.receiverName);
+                    case NORMAL_MESSAGE: //服务器收到客户端请求，要把消息发给某一个对话，即发给该对话中的所有成员
+                        serverThreadService.sendMessageToConversationService(message);
                         break;
-                    case ADD_FRIEND_REQUEST:
-                        String addFriendName = (String) message.content;
-                        addFriendHandler(addFriendName);
+                    case ADD_FRIEND_REQUEST: //服务器收到客户端添加好友请求，把该消息发给被添加好友的客户端
+                        serverThreadService.addFriendService(message);
                         break;
-                    case DELETE_FRIEND_REQUEST:
-                        String deleteFriendName = (String) message.content;
-                        deleteFriendHandler(deleteFriendName);
+                    case AGREED_ADD_FRIEND: //服务器收到客户端同意成为好友请求，通知最初的申请方
+                        serverThreadService.agreedAddFriendService(message);
+                        break;
+                    case DELETE_FRIEND_REQUEST: // 服务器收到客户端删好友请求，删除服务器数据库中FriendList表的相关内容
+                        serverThreadService.deleteFriendService(message);
+                        break;
+                    case ASK_FOR_FRIEND_LIST_REQUEST:
+                        serverThreadService.getFriendListService();
+                        break;
+                    case ASK_FOR_PARTICIPATOR_LIST_REQUEST: // 服务端收到客户端请求，查询某个conversation有哪些account
+                        serverThreadService.getConversationParticipatorListService(message);
+                        break;
+                    case CREATE_CONVERSATION_REQUEST: // 服务器收到客户端请求，分配一个新的conversation ID
+                        serverThreadService.createConversationService(message);
+                        break;
+                    case ASK_FOR_OFFLINE_MESSAGE:
+                        serverThreadService.getOfflineMessage();
                         break;
                     default:
                         //TODO
                 }
             }
         } catch (Exception ex){
-
+            ex.printStackTrace();
         }
+
+        shutDown();
     }
 
-    @Override
-    public boolean login(String account, String password) {
-        return false;
-    }
-
-    @Override
-    public boolean createAccount(String account, String password) {
-        return false;
-    }
-
-    @Override
-    public int addFriendHandler(String friendName) {
-        return 0;
-    }
-
-    @Override
-    public int deleteFriendHandler(String friendName) {
-        return 0;
-    }
-
-    @Override
-    public int sendMessageToFriend(String message, String Friend) {
-        return 0;
-    }
-
-    @Override
-    public int sendBackSystemMessage(String message) {
-        return 0;
-    }
-
-    @Override
-    public Message receiveMessage() {
-        try {
-            Message message = (Message) input.readObject();
-            return message;
-        } catch (IOException ex){
-
-        } catch (ClassNotFoundException ex2){
-
-        }
-        return null;
-    }
-
-    @Override
     public void shutDown() {
-
+        connected = false;
+        logged = false;
+        serverThreadService.shutDownService();
     }
 }
 
