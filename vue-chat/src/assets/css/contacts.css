@@ -1,0 +1,50 @@
+#rowSearch {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  background-color: rgb(240, 240, 240);
+}
+
+h5 {
+  display: table;
+  width: 100px;
+  margin-left: 20px;
+  margin-right: 15px;
+  color: rgb(131, 134, 140);
+}
+
+#btnSearch {
+  width: 150px;
+  margin-left: 20px;
+  margin-right: 15px;
+  font-family: sans-serif;
+  background-color: rgb(85, 174, 166);
+  color: #fff;
+  font-weight: bold;
+  border-color:rgb(85, 174, 166);
+}
+
+#btnSearch:hover {
+  background-color: rgb(250, 250, 250);
+  color: rgb(85, 174, 166);
+  border-width: 1px;
+  border-color: rgb(85, 174, 166);
+}
+
+#rowContact {
+  display: flex;
+  background-color: rgb(250, 250, 250);
+  overflow: hidden;
+}
+
+.list {
+  max-height: calc(100vh - 50px);
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.single-contact {
+  display: table;
+  flex: 1;
+  overflow-y: scroll;
+}
