@@ -33,13 +33,13 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[Sign In Page Screen Shot][signin-screenshot]
-[Sign Up Page Screen Shot][signin-screenshot]
+<!-- [Sign In Page Screen Shot](signin-screenshot]
+[Sign Up Page Screen Shot][signin-screenshot] -->
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Shiyu-Lu/Chat_Application?color=green
+[contributors-shield]: https://img.shields.io/github/contributors/Shiyu-Lu/Chat_Application?color=brightgreen&style=for-the-badge
 [contributors-url]: https://github.com/Shiyu-Lu/Chat_Application/graphs/contributors
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/shiyu-lu-84314b190
