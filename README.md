@@ -1,4 +1,4 @@
-# ATOMS - A Web-Based Chat Application
+# Atoms - A Web-Based Chat Application
 
 <!-- PROJECT SHIELDS -->
 [![Contributors][contributors-shield]][contributors-url]
@@ -32,10 +32,42 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+  
+![Sign In Page Screenshot][signin-screenshot]
 
-<!-- [Sign In Page Screen Shot](signin-screenshot]
-[Sign Up Page Screen Shot][signin-screenshot] -->
+This is a final project for the course *Java Programming* of Peking University delivered by *Dashi Tang*. In the project, we are required to freely develop a program based on Java language.  
 
+Therefore we built this Vue.js chat application with Java backend. We want to get people connected through this web-based app, and this is the reason why we call it *Atoms*.
+
+### Built With
+
+- Java
+- HTTP Server
+- HTML
+- CSS
+- Vue.js
+- NPM
+- SQLite3
+
+<!-- DESCRIPTION -->
+## Description
+
+### Features
+- Sign up
+- Sign in
+- Add contacts
+- Search contacts
+- Delete contacts
+- Chat with contacts
+- Browse history messages
+
+### User Flow
+![User Flow][user-flow]
+
+### UI Design
+![UI Design][ui-design]
+
+### Front End Structure
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
@@ -43,4 +75,6 @@
 [contributors-url]: https://github.com/Shiyu-Lu/Chat_Application/graphs/contributors
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/shiyu-lu-84314b190
-<!-- [signin-screenshot]:  -->
+[signin-screenshot]: screenshots/SignIn-Page.png
+[user-flow]: screenshots/UserFlowChart.png
+[ui-design]: screenshots/UIDesign.png
