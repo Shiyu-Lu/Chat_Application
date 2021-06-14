@@ -125,6 +125,20 @@ Therefore we built this Vue.js chat application with Java backend. And it's call
 ### Back End Structure
 **Framework Flow Chart**
 ![backend][backend-url]
+
+**Feature Highlights**
+- app-based structure
+  - The app-based part of the back end is built as a client-server model. 
+  - On the server side, the main thread (ChatServer) can create new threads (ServerThread )for incoming users
+  - On the client side, all related files can run in local devices as a software application and should better add to a UI layer
+  - ChatClientForServer is only created after successful login and used for listen to message from server.
+  - ChatClientForUser is used for listen to message from user but also for message from server before login.
+  - On both client side and server side, there are three layers of abstraction, namely controller, service, mapper
+ - web-based structure
+  - a simple java HTTP server together with the app-based structure above
+  - HTTP server responses to http request
+  - use polling to send back newly incoming messages
+
 **File Structure**
 ```
 └── src
