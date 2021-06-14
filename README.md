@@ -157,13 +157,38 @@ Therefore we built this Vue.js chat application with Java backend. And it's call
     │   ├── NormalMessage.java
     │   ├── OfflineMessageRecord.java
     │   ├── RawAccountRecord.java
-    │   ├── RawConversationRecord.java
+    │   ├── RawConversationRecord.java 
 ```
+
+- `BLL` - some handlers (or controllers or APIs) for the application
+  - `ChatServer.java` - a typical server in Client-Server Model that starts a socket connection with each incoming clients
+  - `ServerThread.java` - the thread in server worked for a particular client
+  - `ChatClientForUser.java` - a typical client in Client-Server Model that responses to a particular user
+  - `ChatClientForServer.java` - a typical clien in Client-Server Model that receives messages from server, a thread created by `ChatClientForUser.java` after login
+  - `ChatHttpServer.java` - to make the original **app-based** backend server (like the server in a Client-Server Model) into a **web-based** one,  wrapped them all in this simple Http Server
+- `Service` - implements functions for handlers in `BLL`
+- `DAL` - implements data based accessing
+  - `ClientDBConnection.java` - creats db for each client
+  - `ServerDBConnection.java` - creats db for the server
+  - `xxxDAO.java` - Data Access Object for particular table in db
+- `model` - some java classes
+  - `xxxRecord.java` - class stands for a record in a db table
+  - `xxxMessage.java` - class stands for a kind of message between client and server
 
 ### Database Construction
 
 ![Database ERD][db-erd]
 
+
+- For client
+  - `Conversations` - records all conversations that a certain user has joined in
+  - `ConversationMessage` - records history dialogue messages (or the loacl chat history) happened in each conversation for a certain user
+- For server
+  - `Accounts` - username、password information for each account
+  - `Conversations` - assign a unique id for each conversation (either private chat or group chat)
+  -  `ConversationAccounts` - records participators of each conversation (either private chat or group chat)
+  -  `AccountFriends` - records friendship information between users
+  -  `OfflineMessage` - temporarily stores message for users who are offline 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
