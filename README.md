@@ -123,7 +123,9 @@ Therefore we built this Vue.js chat application with Java backend. And it's call
 - ```store``` - some static variables
 
 ### Back End Structure
-
+**Framework Flow Chart**
+![backend][backend-url]
+**File Structure**
 ```
 └── src
     ├── BLL
@@ -192,7 +194,7 @@ Therefore we built this Vue.js chat application with Java backend. And it's call
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Shiyu-Lu/Chat_Application?color=brightgreen&style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors-anon/Shiyu-Lu/Chat_Application?color=brightgreen&style=for-the-badge
 [contributors-url]: https://github.com/Shiyu-Lu/Chat_Application/graphs/contributors
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/shiyu-lu-84314b190
@@ -200,3 +202,4 @@ Therefore we built this Vue.js chat application with Java backend. And it's call
 [user-flow]: screenshots/UserFlowChart.png
 [ui-design]: screenshots/UIDesign.png
 [db-erd]: screenshots/ERD.png
+[backend-url]: screenshots/backend-structure.png
