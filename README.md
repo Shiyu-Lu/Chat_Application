@@ -63,7 +63,19 @@ Therefore we built this Vue.js chat application with Java backend. And it's call
 
 ### UI Design and User Flow
 
-![UI Design][ui-design]
+**UI Design**
+![UI Design][ui-design]  
+
+*SignUp Page*
+![SignUp Page][signup-page]  
+
+*Chats Page*
+![Chats Page][chats-page]   
+
+*Contacts Page*
+![Contacts Page][contacts-page]   
+
+**User Flow**  
 ![User Flow][user-flow]
 
 **Feature Highlights**
@@ -213,6 +225,9 @@ Therefore we built this Vue.js chat application with Java backend. And it's call
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/shiyu-lu-84314b190
 [signin-screenshot]: screenshots/SignIn-Page.png
+[signup-page]: screenshots/SignUp-Page.png
+[chats-page]: screenshots/Chats-Page.png
+[contacts-page]: screenshots/Contacts-Page.png
 [user-flow]: screenshots/UserFlowChart.png
 [ui-design]: screenshots/UIDesign.png
 [db-erd]: screenshots/ERD.png
